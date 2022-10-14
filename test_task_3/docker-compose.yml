@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  node_db:
+    image: mysql
+    container_name: node_db
+    environment:
+      MYSQL_ROOT_PASSWORD: pyrn1309
+    volumes:
+      - ./api/node_db/data:/var/lib/mysql
+    restart: always
+volumes:
+  nps_data: {}
