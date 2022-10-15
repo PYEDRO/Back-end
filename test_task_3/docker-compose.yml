@@ -2,14 +2,19 @@ version: "3.8"
 
 services:
   node_db:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
+    image: mysql:8.0
+    container_name: mysql_container
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: example
-
-  adminer:
-    image: adminer
-    restart: always
+    envoriment: 
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cadastro
     ports:
-      - 8080:8080
+      - "3306:3306"
+    cap_add:
+      - SYS_NICE
+    # adminer:
+    #   image: adminer
+    #   container_name: adminer_container
+    #   restart: always
+    #   ports:
+    #     - 8080:8080
