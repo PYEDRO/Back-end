@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mysql = require('../mysql').pool;
+const mysql = require('../datbase/mysql').pool;
 
 
 // Retorna todos os produtos 
@@ -11,16 +11,16 @@ router.get('/', (req, res, next) =>{
 });
 
 router.post('/', (req, res, next) => {
-    mysql.getConnection((error, conn) => {
+    mysql.getConnection((err, conn) => {
         conn.query(
             'INSERT INTO produtos (nome, preco) VALUES (?,?)',
             [req.body.nome, req.body.preco],
-            (error, resultado, field) => {
+            (err, resultado, field) => {
                 conn.release();
-                if(error){
+                if (err) {
                     return res.status(500).send({
                         error: error,
-                        reponse:null
+                        reponse: null
                     });
                 }
                 res.status(201).send({
@@ -28,9 +28,10 @@ router.post('/', (req, res, next) => {
                     id_produto: resultado.insertId
                 });
             }
-        )
-    })
+        );
+    });
 });
+
 
 // Retorna apenas de um pedido
 router.get('/:id_produto', (req, res, next) => {
@@ -59,5 +60,7 @@ router.delete('/', (req, res, next) => {
         mensagem : "Deu certo !"
     });
 });
+
+
 
 module.exports = router;

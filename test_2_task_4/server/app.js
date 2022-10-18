@@ -4,8 +4,8 @@ const morgan =  require ('morgan');
 const bodyParser = require('body-parser');
 
 
-const routerProdutos = require('./routes/routes');
-const routerPedidos = require('./routes/pedidos');
+const routerProdutos = require('../routes/routes');
+const routerPedidos = require('../routes/pedidos');
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
