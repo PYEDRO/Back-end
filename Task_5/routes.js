@@ -1,6 +1,8 @@
 const express = require('express');
+const login = require('./middleware/login');
 const router = express.Router();
 const mysql = require('./datbase/mysql').pool;
+const Login = require('./middleware/login');
 
 
 // Retorna todos os produtos 
@@ -32,7 +34,9 @@ router.get('/', (req, res, next) =>{
     });
 });
 
-router.post('/', (req, res, next) => {
+// Insere um produto
+router.post('/', Login.obrigatorio, (req, res, next) => {
+    console.log(req.usuario);
     mysql.getConnection((error, conn) => {
         if(error){return res.status(500).send({error: error})};
         conn.query(
@@ -94,13 +98,13 @@ router.get('/:id_produto', (req, res, next) => {
     });
 });
 
-router.patch('/', (req, res, next) => {
+router.patch('/', Login.obrigatorio, (req, res, next) => {
     mysql.getConnection((error, conn) => {
-        if (error) { return res.status(500).send({ error: error }) };
+        if (error) { return res.status(500).send({ error: error }) }
         conn.query(
             `UPDATE produtos
-                SET nome          = ?,
-                    preco         = ?,
+                SET nome          = ?
+                    preco         = ?
                 WHERE id_produto  = ?`,
             [
                 req.body.nome,
@@ -109,7 +113,7 @@ router.patch('/', (req, res, next) => {
             ],
             (error, resultado, field) => {
                 conn.release();
-                if (error) { return res.status(500).send({ error: error }) };
+                if (error) { return res.status(500).send({ error: error }) }
                 const response = {
                     mensagem: 'Produto atualizado com sucesso',
                     produtoID: {
@@ -129,7 +133,7 @@ router.patch('/', (req, res, next) => {
     });
 });
 
-router.delete('/', (req, res, next) => {
+router.delete('/', Login.obrigatorio, (req, res, next) => {
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({ error: error }) };
         conn.query(
