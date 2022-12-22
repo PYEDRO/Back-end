@@ -1,7 +1,7 @@
 const users = [
     {
         id: 1,
-        name: "Leanne Graham",
+        name: "Leanne ",
         username: "Bret",
         phone: "1-770-736-8031 x56442",
     },
